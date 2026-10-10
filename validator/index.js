@@ -15,7 +15,7 @@ if (!email) {
 const fecha = process.argv[3];
 
 if (!fecha) {
-  console.log("debes introducir una fecha");
+  console.log("debes introducir una fecha en formato dd/mm/YYYY");
 } else {
   try {
     console.log(validator.isDate(fecha, "dd/mm/YYYY"));
@@ -25,3 +25,5 @@ if (!fecha) {
     console.log("ha fallado la validación");
   }
 }
+
+//Leer por consola con readline para el examen
