@@ -7,6 +7,8 @@ const server = http.createServer(async (req, res) => {
   //HAY QUE PONERLE EL ASYNC AL PONER LO DE AWAIT ABAJO
   const { method } = req; //aqui se deja solo method, quitamos la url
   console.log("Petición recibida");
+  //Los parámetros para crear la nueva URL con el request.url
+  // y con esa función que define el localhost por ejemplo en este caso
   const { pathname, searchParams } = new URL(
     req.url,
     `http://${req.headers.host}`,
@@ -14,10 +16,11 @@ const server = http.createServer(async (req, res) => {
 
   const nombre = searchParams.get("nombre");
 
-  //NO OLVIDAR LAS CABECERAS EN LOS DISTINTOS CASOS
+  //NO OLVIDAR LAS CABECERAS EN LOS DISTINTOS CASOS, ESTA SERVIRÍA PARA TODOS POR DEFECTO
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   switch (pathname) {
     case "/":
+      //La cabecera de html para este caso
       res.setHeader("Content-Type", "text/html; charset=utf-8");
       res.end("<h1>Bienvenido a la Home</h1>");
       break;
@@ -34,11 +37,12 @@ const server = http.createServer(async (req, res) => {
           if (nombre) {
             resultado = resultado.filter(
               (u) => u.nombre.toLowerCase() === nombre.toLowerCase(),
-            );
+            ); //Si pongo el nombre en minúscula da igual si está en mayúsculas o minúsculas que lo convierte
           }
 
           if (offset && limit) {
-            resultado = resultado.slice(offset, offset + limit); //el slice es una función que marca donde comienza y donde termina la copia del array
+            resultado = resultado.slice(offset, offset + limit);
+            //el slice es una función que marca donde comienza y donde termina la copia del array
           }
 
           res.statusCode = 200; //200 significa que todo ha ido bien en el método GET
@@ -49,6 +53,7 @@ const server = http.createServer(async (req, res) => {
           return res.end(JSON.stringify({ message: "Error interno" }));
         }
       }
+      //El contenido del método POST se puede hacer en una función aparte para ganar modularidad
       if (method === "POST") {
         try {
           const body = await json(req); //Función asíncrona (async) para que funcione el await
@@ -70,12 +75,12 @@ const server = http.createServer(async (req, res) => {
           }
 
           const nuevoUsuario = {
-            id: clientes.length + 1, //la longitud de los usuarios más 1 para ese nuevo id
+            id: usuarios.length + 1, //la longitud de los usuarios más 1 para ese nuevo id
             nombre,
             edad,
             altura,
           };
-          clientes.push(nuevoUsuario);
+          usuarios.push(nuevoUsuario); //Añadir el nuevo usuario a los clientes
           res.statusCode = 201; //201 significa que se creó correctamente
           return res.end(JSON.stringify(nuevoUsuario));
         } catch (error) {
