@@ -1,6 +1,7 @@
 import http from "node:http";
 const DESIRED_PORT = 3000;
 import { json } from "node:stream/consumers";
+//Importar del archivo los usuarios creados
 import { usuarios } from "./archivo.js";
 
 const server = http.createServer(async (req, res) => {
@@ -28,7 +29,7 @@ const server = http.createServer(async (req, res) => {
       if (method === "GET") {
         try {
           //const nombre = searchParams.get("nombre"); <- esto va fuera del switch
-          //convertir a número el searchParams.get
+          //convertir a número el searchParams.get porque sino devuelve un string
           const limit = Number(searchParams.get("limit"));
           const offset = Number(searchParams.get("offset")) || 0;
 
