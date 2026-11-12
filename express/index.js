@@ -1,4 +1,5 @@
 import express from "express";
+import { usuarios } from "./usuarios.js";
 
 const app = express();
 
@@ -25,6 +26,13 @@ app.get("/health", (req, res) => {
   res.json({
     status: "ok",
     uptime: process.uptime(),
+  });
+});
+
+app.get("/usuarios/:id", (req, res) => {
+  const userId = req.params.id;
+  res.json({
+    id: userId,
   });
 });
 
